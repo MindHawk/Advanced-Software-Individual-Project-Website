@@ -28,7 +28,7 @@ export default {
   name: "Forum.vue",
   methods: {
     getForums() {
-      fetch("http://localhost:8090/ForumService/GetForums")
+      fetch("http://localhost:8100/api/forums")
         .then((response) => {
           if(response.ok) {
             return response.json().then((data) => {
@@ -38,7 +38,7 @@ export default {
         })
     },
     postForum() {
-      fetch("http://localhost:8090/ForumService/PostForum", {
+      fetch("http://localhost:8100/api/forum", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -58,7 +58,7 @@ export default {
         })
     },
     deleteForum(forum) {
-      fetch("http://localhost:8090/ForumService/DeleteForum/" + forum.name, {
+      fetch("http://localhost:8100/forum/" + forum.name, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
