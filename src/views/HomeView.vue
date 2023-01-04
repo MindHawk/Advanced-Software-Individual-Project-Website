@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import TheWelcome from "../components/TheWelcome.vue";
-import Forum from "../components/Forum.vue";
+import ForumList from "../components/ForumList.vue";
 </script>
 
 <template>
   <main>
-    <Forum/>
+    <ForumList/>
   </main>
 </template>
