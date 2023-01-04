@@ -28,7 +28,12 @@ export default {
   name: "Forum.vue",
   methods: {
     getForums() {
-      fetch("http://localhost:8100/api/forums")
+      fetch("http://localhost:8100/api/forums", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.jwt,
+          "Content-Type": "application/json",
+        }})
         .then((response) => {
           if(response.ok) {
             return response.json().then((data) => {
@@ -41,6 +46,7 @@ export default {
       fetch("http://localhost:8100/api/forum", {
         method: "POST",
         headers: {
+          Authorization: "Bearer " + localStorage.jwt,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -61,6 +67,7 @@ export default {
       fetch("http://localhost:8100/forum/" + forum.name, {
         method: "DELETE",
         headers: {
+          Authorization: "Bearer " + localStorage.jwt,
           Accept: "application/json",
           "Content-Type": "application/json",
         },

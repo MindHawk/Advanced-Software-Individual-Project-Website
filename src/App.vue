@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import Forum from "./components/Forum.vue";
+import GoogleAuth from "@/components/GoogleAuth.vue";
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import Forum from "./components/Forum.vue";
       width="125"
       height="125"
     />
+    <GoogleAuth/>
 
     <div class="wrapper">
 
