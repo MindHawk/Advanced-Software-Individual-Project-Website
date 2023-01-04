@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <template v-if="forumExists">
     <h1>Browse forums</h1>
     <h2>Welcome to forum: {{ this.forumName }}</h2>
     <button @click="postPost">Add post</button>
@@ -8,14 +8,17 @@
     <h2>Posts:</h2>
     <ul>
       <li v-for="post in posts" v-bind:key="post.name">
-        <RouterLink to="/forum/{{ post.name }}">
-          <p>Forum name: {{ post.name }}</p>
+        <RouterLink :to="{name: 'post', params: {postId: post.id}}">
+          Name: {{ post.title }}
         </RouterLink>
         <p>Forum description: {{ post.content }}</p>
-        <button @click="deleteForum(post)">Delete forum</button>
+        <button @click="deletePost(post)">Delete post</button>
       </li>
     </ul>
-  </div>
+  </template>
+  <template v-else>
+    <h1>Forum not found.</h1>
+  </template>
 </template>
 
 <script>
@@ -24,6 +27,7 @@ import {useRoute} from "vue-router";
 export default {
   data() {
     return {
+      forumExists: false,
       forumName: "",
       posts: [],
       postTitle: "",
@@ -32,6 +36,21 @@ export default {
   },
   name: "Forum.vue",
   methods: {
+    getForum() {
+      fetch("http://localhost:8100/api/forum/" + this.forumName, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.jwt,
+          "Content-Type": "application/json",
+        }})
+        .then((response) => {
+          if(response.ok) {
+            return response.json().then((data) => {
+              this.forumExists = true;
+            });
+          }
+        })
+    },
     getPostsForForum() {
       fetch("http://localhost:8100/api/posts/" + this.forumName, {
         method: "GET",
@@ -42,8 +61,7 @@ export default {
           .then((response) => {
             if(response.ok) {
               return response.json().then((data) => {
-                console.log(data)
-                this.forums = data;
+                this.posts = data;
               });
             }
           })
@@ -65,13 +83,13 @@ export default {
           .then((response) => {
             if(response.ok) {
               return response.json().then((data) => {
-                this.forums.push(data);
+                this.posts.push(data);
               });
             }
           })
     },
-    deleteForum(forum) {
-      fetch("http://localhost:8100/api/forum/" + forum.name, {
+    deletePost(post) {
+      fetch("http://localhost:8100/api/post/" + post.id, {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + localStorage.jwt,
@@ -81,7 +99,7 @@ export default {
       })
           .then((response) => {
             if(response.ok) {
-              this.forums = this.forums.filter((f) => f.name !== forum.name);
+              this.posts = this.posts.filter((f) => f.id !== post.id);
             }
           });
     },
@@ -89,6 +107,7 @@ export default {
   mounted() {
     const route = useRoute();
     this.forumName = route.params.forumName;
+    this.getForum();
     this.getPostsForForum();
   },
 }
