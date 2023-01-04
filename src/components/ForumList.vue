@@ -1,16 +1,17 @@
 <template>
   <div>
     <h1>Browse forums</h1>
-    <h2>Create a forum</h2>
-    <input v-model="forumName" type="text" placeholder="Forum name">
-    <input v-model="forumDescription" type="text" placeholder="Forum description">
-    <button @click="postForum">Add forum</button>
-    <h2>Forums:</h2>
     <ul>
+      <h2>Create a forum</h2>
+      <input v-model="forumName" type="text" placeholder="Forum name">
+      <input v-model="forumDescription" type="text" placeholder="Forum description">
+      <button @click="postForum">Add forum</button>
+      <h2>Forums:</h2>
       <li v-for="forum in forums" v-bind:key="forum.name">
-        <RouterLink to="/forum/" + forum.name><p>Forum name: {{ forum.name }}</p>
+        <RouterLink :to="{name: 'forum', params: {forumName: forum.name}}">
+          Name: {{ forum.name }}
         </RouterLink>
-        <p>Forum description: {{ forum.description }}</p>
+        <p>Description: {{ forum.description }}</p>
         <button @click="deleteForum(forum)">Delete forum</button>
       </li>
     </ul>
