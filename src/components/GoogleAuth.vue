@@ -5,7 +5,7 @@ import { decodeCredential } from "vue3-google-login";
 <template>
   <template v-if="jwt">
     <p>Welcome, {{ username }}</p>
-    <img :src="picture" alt="profile picture" />
+    <img :src="picture" width="60" height="60" alt="profile picture" />
     <button @click="logout">Log out</button>
   </template>
   <template v-else>
