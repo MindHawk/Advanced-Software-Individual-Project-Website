@@ -7,6 +7,7 @@ import { decodeCredential } from "vue3-google-login";
     <p>Welcome, {{ username }}</p>
     <img :src="picture" width="60" height="60" alt="profile picture" />
     <button @click="logout">Log out</button>
+    <button @click="delete">Delete Account</button>
   </template>
   <template v-else>
     <GoogleLogin :callback="login" />
@@ -32,6 +33,13 @@ export default {
         localStorage.username = userData.name;
         localStorage.picture = userData.picture;
         this.update();
+      fetch("http://localhost:8100/api/register", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.jwt,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }})
     },
     logout() {
       localStorage.jwt = "";
@@ -43,7 +51,23 @@ export default {
       this.jwt = localStorage.jwt;
       this.username = localStorage.username;
       this.picture = localStorage.picture;
-    }
+    },
+    delete() {
+      fetch("http://localhost:8100/api/account", {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.jwt,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }})
+        .then((response) => {
+          if(response.ok) {
+            return response.json().then((data) => {
+              this.logout();
+            });
+          }
+        })
+    },
   },
   mounted() {
     this.update();
