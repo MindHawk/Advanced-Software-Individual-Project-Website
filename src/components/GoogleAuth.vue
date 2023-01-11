@@ -7,7 +7,7 @@ import { decodeCredential } from "vue3-google-login";
     <p>Welcome, {{ username }}</p>
     <img :src="picture" width="60" height="60" alt="profile picture" />
     <button @click="logout">Log out</button>
-    <button @click="delete">Delete Account</button>
+    <button @click="deleteAccount">Delete Account</button>
   </template>
   <template v-else>
     <GoogleLogin :callback="login" />
@@ -52,7 +52,7 @@ export default {
       this.username = localStorage.username;
       this.picture = localStorage.picture;
     },
-    delete() {
+    deleteAccount() {
       fetch("http://localhost:8100/api/account", {
         method: "DELETE",
         headers: {

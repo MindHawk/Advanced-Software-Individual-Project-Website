@@ -96,7 +96,7 @@ export default {
       })
           .then((response) => {
             if(response.ok) {
-              this.posts = this.posts.filter((f) => f.id !== post.id);
+              this.comments = this.comments.filter((f) => f.id !== comment.id);
             }
           });
     },
